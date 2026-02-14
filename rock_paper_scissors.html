@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rock Paper Scissors Game</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .game-container {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        max-width: 600px;
+        width: 100%;
+      }
+
+      h1 {
+        text-align: center;
+        color: #667eea;
+        margin-bottom: 30px;
+        font-size: 2.5em;
+      }
+
+      .scoreboard {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 40px;
+        padding: 20px;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        border-radius: 15px;
+      }
+
+      .score {
+        text-align: center;
+      }
+
+      .score-label {
+        font-size: 1.2em;
+        color: #555;
+        margin-bottom: 10px;
+      }
+
+      .score-value {
+        font-size: 3em;
+        font-weight: bold;
+        color: #667eea;
+      }
+
+      .choices {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 30px;
+        gap: 15px;
+      }
+
+      .choice-btn {
+        background: white;
+        border: 3px solid #667eea;
+        border-radius: 15px;
+        padding: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .choice-btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .choice-btn:active {
+        transform: translateY(-2px);
+      }
+
+      .choice-icon {
+        font-size: 3em;
+      }
+
+      .choice-label {
+        font-size: 1.1em;
+        font-weight: 600;
+      }
+
+      .result-area {
+        text-align: center;
+        margin-bottom: 30px;
+        min-height: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .result-message {
+        font-size: 1.8em;
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
+
+      .result-message.win {
+        color: #10b981;
+      }
+
+      .result-message.lose {
+        color: #ef4444;
+      }
+
+      .result-message.draw {
+        color: #f59e0b;
+      }
+
+      .round-info {
+        font-size: 1.2em;
+        color: #666;
+      }
+
+      .reset-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        font-size: 1.2em;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: block;
+        margin: 0 auto;
+        font-weight: 600;
+      }
+
+      .reset-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+      }
+
+      .reset-btn:active {
+        transform: scale(0.98);
+      }
+
+      .game-over {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .game-over h2 {
+        font-size: 2.5em;
+        margin-bottom: 15px;
+      }
+
+      .game-over p {
+        font-size: 1.3em;
+      }
+
+      @media (max-width: 600px) {
+        .game-container {
+          padding: 20px;
+        }
+
+        h1 {
+          font-size: 2em;
+        }
+
+        .choices {
+          flex-direction: column;
+        }
+
+        .choice-icon {
+          font-size: 2.5em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="game-container">
+      <h1>🎮 Rock Paper Scissors</h1>
+
+      <div class="scoreboard">
+        <div class="score">
+          <div class="score-label">👤 You</div>
+          <div class="score-value" id="human-score">0</div>
+        </div>
+        <div class="score">
+          <div class="score-label">🤖 Computer</div>
+          <div class="score-value" id="computer-score">0</div>
+        </div>
+      </div>
+
+      <div id="game-area">
+        <div class="choices">
+          <button class="choice-btn" onclick="playRound(1)">
+            <div class="choice-icon">✊</div>
+            <div class="choice-label">Rock</div>
+          </button>
+          <button class="choice-btn" onclick="playRound(2)">
+            <div class="choice-icon">✋</div>
+            <div class="choice-label">Paper</div>
+          </button>
+          <button class="choice-btn" onclick="playRound(3)">
+            <div class="choice-icon">✌️</div>
+            <div class="choice-label">Scissors</div>
+          </button>
+        </div>
+
+        <div class="result-area" id="result-area">
+          <div class="result-message">Choose your move!</div>
+        </div>
+      </div>
+
+      <button class="reset-btn" onclick="resetGame()">New Game</button>
+    </div>
+
+    <script>
+      let humanScore = 0;
+      let computerScore = 0;
+      const winningScore = 5;
+
+      const choices = {
+        1: { name: "Rock", icon: "✊" },
+        2: { name: "Paper", icon: "✋" },
+        3: { name: "Scissors", icon: "✌️" },
+      };
+
+      function playRound(userChoice) {
+        if (humanScore >= winningScore || computerScore >= winningScore) {
+          return;
+        }
+
+        const computerChoice = Math.floor(Math.random() * 3) + 1;
+
+        let resultMessage = "";
+        let resultClass = "";
+
+        // Determine winner
+        if (userChoice === computerChoice) {
+          resultMessage = `Match Draw! 😮‍💨<br>Both chose ${choices[userChoice].name}`;
+          resultClass = "draw";
+        } else if (
+          (userChoice === 1 && computerChoice === 3) ||
+          (userChoice === 2 && computerChoice === 1) ||
+          (userChoice === 3 && computerChoice === 2)
+        ) {
+          resultMessage = `Congrats! You Won! 👍<br>${choices[userChoice].icon} ${choices[userChoice].name} beats ${choices[computerChoice].icon} ${choices[computerChoice].name}`;
+          resultClass = "win";
+          humanScore++;
+        } else {
+          resultMessage = `Computer Won! 🤖<br>${choices[computerChoice].icon} ${choices[computerChoice].name} beats ${choices[userChoice].icon} ${choices[userChoice].name}`;
+          resultClass = "lose";
+          computerScore++;
+        }
+
+        // Update scores
+        document.getElementById("human-score").textContent = humanScore;
+        document.getElementById("computer-score").textContent = computerScore;
+
+        // Display result
+        const resultArea = document.getElementById("result-area");
+        resultArea.innerHTML = `<div class="result-message ${resultClass}">${resultMessage}</div>`;
+
+        // Check for game over
+        if (humanScore >= winningScore || computerScore >= winningScore) {
+          setTimeout(gameOver, 1000);
+        }
+      }
+
+      function gameOver() {
+        const gameArea = document.getElementById("game-area");
+        const winner = humanScore >= winningScore ? "You" : "Computer";
+        const emoji = humanScore >= winningScore ? "😎🥳" : "🤖👾";
+
+        gameArea.innerHTML = `
+                <div class="game-over">
+                    <h2>${winner} Won! ${emoji}</h2>
+                    <p>Final Score: ${humanScore} - ${computerScore}</p>
+                </div>
+            `;
+      }
+
+      function resetGame() {
+        humanScore = 0;
+        computerScore = 0;
+
+        document.getElementById("human-score").textContent = "0";
+        document.getElementById("computer-score").textContent = "0";
+
+        const gameArea = document.getElementById("game-area");
+        gameArea.innerHTML = `
+                <div class="choices">
+                    <button class="choice-btn" onclick="playRound(1)">
+                        <div class="choice-icon">✊</div>
+                        <div class="choice-label">Rock</div>
+                    </button>
+                    <button class="choice-btn" onclick="playRound(2)">
+                        <div class="choice-icon">✋</div>
+                        <div class="choice-label">Paper</div>
+                    </button>
+                    <button class="choice-btn" onclick="playRound(3)">
+                        <div class="choice-icon">✌️</div>
+                        <div class="choice-label">Scissors</div>
+                    </button>
+                </div>
+
+                <div class="result-area" id="result-area">
+                    <div class="result-message">Choose your move!</div>
+                </div>
+            `;
+      }
+    </script>
+  </body>
+</html>
